@@ -997,7 +997,129 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
   )
 }
 
-function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, user }) {
+function MemoryModal({ agent, onClose }) {
+  const [memories, setMemories] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [newEntry, setNewEntry] = useState({ category: '', key: '', value: '' })
+  const [showAdd, setShowAdd] = useState(false)
+
+  useEffect(() => {
+    loadMemory()
+  }, [agent])
+
+  const loadMemory = async () => {
+    setLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from('agent_memory')
+        .select('*')
+        .eq('agent_id', agent.id)
+        .order('category')
+        .order('key')
+      if (!error && data) setMemories(data)
+    } catch (err) {
+      console.error('Error loading memory:', err)
+    }
+    setLoading(false)
+  }
+
+  const handleAdd = async () => {
+    if (!newEntry.category || !newEntry.key || !newEntry.value) return
+    try {
+      const { error } = await supabase.from('agent_memory').upsert({
+        agent_id: agent.id,
+        category: newEntry.category,
+        key: newEntry.key,
+        value: newEntry.value,
+        source: 'manual',
+      }, { onConflict: 'agent_id,category,key' })
+      if (!error) {
+        setNewEntry({ category: '', key: '', value: '' })
+        setShowAdd(false)
+        loadMemory()
+      }
+    } catch (err) {
+      console.error('Error adding memory:', err)
+    }
+  }
+
+  const handleDelete = async (id) => {
+    if (!confirm('Smazat tuto znalost?')) return
+    try {
+      await supabase.from('agent_memory').delete().eq('id', id)
+      loadMemory()
+    } catch (err) {
+      console.error('Error deleting memory:', err)
+    }
+  }
+
+  const grouped = memories.reduce((acc, m) => {
+    if (!acc[m.category]) acc[m.category] = []
+    acc[m.category].push(m)
+    return acc
+  }, {})
+
+  const categoryLabels = {
+    role: '\u{1F3AF} Role & Nástroje',
+    context: '\u{1F4CB} Kontext',
+    rules: '\u{1F4CF} Pravidla',
+    brand: '\u{1F3A8} Brand',
+    products: '\u{1F4E6} Produkty',
+    platforms: '\u{1F310} Platformy',
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', maxHeight: '80vh', overflow: 'auto' }}>
+        <div className="modal-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>{agent.icon} Paměť: {agent.name}</span>
+          <span style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 400 }}>{memories.length} znalostí</span>
+        </div>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '24px', color: '#9CA3AF' }}>Načítám...</div>
+        ) : (
+          <>
+            {Object.entries(grouped).map(([cat, items]) => (
+              <div key={cat} style={{ marginBottom: '16px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#FAB945', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  {categoryLabels[cat] || cat}
+                </div>
+                {items.map((m) => (
+                  <div key={m.id} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '10px 12px', marginBottom: '6px', fontSize: '13px', position: 'relative' }}>
+                    <div style={{ fontWeight: 600, color: '#E5E7EB', marginBottom: '3px' }}>{m.key}</div>
+                    <div style={{ color: '#9CA3AF', lineHeight: '1.4' }}>{m.value}</div>
+                    <button onClick={() => handleDelete(m.id)} style={{ position: 'absolute', top: '6px', right: '8px', background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', fontSize: '12px' }} title="Smazat">\u2715</button>
+                  </div>
+                ))}
+              </div>
+            ))}
+            {showAdd ? (
+              <div style={{ background: 'rgba(250,185,69,0.1)', borderRadius: '8px', padding: '12px', marginTop: '12px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#FAB945', marginBottom: '8px' }}>Přidat znalost</div>
+                <input className="form-input" placeholder="Kategorie (brand, products, rules...)" value={newEntry.category} onChange={(e) => setNewEntry((p) => ({ ...p, category: e.target.value }))} style={{ marginBottom: '6px', fontSize: '13px' }} />
+                <input className="form-input" placeholder="Klíč (název znalosti)" value={newEntry.key} onChange={(e) => setNewEntry((p) => ({ ...p, key: e.target.value }))} style={{ marginBottom: '6px', fontSize: '13px' }} />
+                <textarea className="form-textarea" placeholder="Hodnota (co si má agent zapamatovat)" value={newEntry.value} onChange={(e) => setNewEntry((p) => ({ ...p, value: e.target.value }))} style={{ marginBottom: '8px', fontSize: '13px', minHeight: '60px' }} />
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button className="save-btn" onClick={handleAdd} style={{ fontSize: '13px', padding: '6px 16px' }}>Uložit</button>
+                  <button className="cancel-btn" onClick={() => setShowAdd(false)} style={{ fontSize: '13px', padding: '6px 16px' }}>Zrušit</button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => setShowAdd(true)} style={{ width: '100%', padding: '10px', background: 'rgba(250,185,69,0.15)', border: '1px dashed #FAB945', borderRadius: '8px', color: '#FAB945', cursor: 'pointer', fontSize: '13px', fontWeight: 600, marginTop: '8px' }}>
+                + Naučit agenta něco nového
+              </button>
+            )}
+          </>
+        )}
+        <div style={{ marginTop: '16px', textAlign: 'right' }}>
+          <button className="cancel-btn" onClick={onClose}>Zavřít</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, onMemoryClick, user }) {
   const statusIcon = {
     running: '✓',
     warning: '⚠',
@@ -1038,6 +1160,7 @@ function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, user }) {
           <span className="agent-icon">{agent.icon}</span>
           <span>{agent.name}</span>
           <span className={`agent-status ${agent.status}`} title={agent.status} />
+          <button onClick={(e) => { e.stopPropagation(); onMemoryClick(agent); }} title="Paměť agenta" style={{ marginLeft: 'auto', background: 'rgba(250,185,69,0.2)', border: '1px solid rgba(250,185,69,0.3)', borderRadius: '6px', padding: '2px 8px', cursor: 'pointer', fontSize: '14px', color: '#FAB945', lineHeight: '1' }}>{String.fromCodePoint(0x1F9E0)}</button>
         </div>
         <div className="agent-info">{agent.info}</div>
       </div>
@@ -1080,6 +1203,7 @@ export default function App() {
   const [selectedTask, setSelectedTask] = useState(null)
   const [newTaskAgent, setNewTaskAgent] = useState(null)
   const [activity, setActivity] = useState([])
+  const [memoryAgent, setMemoryAgent] = useState(null)
   const subscriptionRef = useRef(null)
 
   useEffect(() => {
@@ -1285,6 +1409,7 @@ export default function App() {
                     setNewTaskAgent(agentId)
                     setSelectedTask({ agent: agentId })
                   }}
+                  onMemoryClick={setMemoryAgent}
                   user={user}
                 />
               ))}
@@ -1319,6 +1444,13 @@ export default function App() {
             onSave={handleSaveTask}
             onDelete={handleDeleteTask}
             user={user}
+          />
+        )}
+
+        {memoryAgent && (
+          <MemoryModal
+            agent={memoryAgent}
+            onClose={() => setMemoryAgent(null)}
           />
         )}
       </div>
