@@ -9,3 +9,5 @@ Kanban board pro AI agenty FitPraha.
 
 ## Live
 [fitpraha-board.vercel.app](https://fitpraha-board.vercel.app)
+
+Deployed on Vercel with Supabase realtime.
