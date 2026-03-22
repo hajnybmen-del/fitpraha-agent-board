@@ -327,12 +327,12 @@ const css = `
     color: #FAB945;
   }
 
-  .task-tag.probÃ­hÃ¡ {
+  .task-tag.probíhá {
     background: rgba(59, 130, 246, 0.2);
     color: #3B82F6;
   }
 
-  .task-tag.ÄekÃ¡ {
+  .task-tag.čeká {
     background: rgba(245, 158, 11, 0.2);
     color: #F59E0B;
   }
@@ -692,13 +692,13 @@ const css = `
 const INIT_TASKS = [
   {
     id: 1,
-    title: 'KlientskÃ© briefing zaslÃ¡nÃ­',
-    description: 'PÅÃ­prava tÃ½dennÃ­ho briefingu pro klienty',
+    title: 'Klientské briefing zaslání',
+    description: 'Příprava týdenního briefingu pro klienty',
     agent: 'ceo',
     status: 'inprogress',
     priority: 'high',
     deadline: '2026-03-24',
-    assigned_to: 'LukÃ¡Å¡',
+    assigned_to: 'Lukáš',
     created_by: 'system',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -707,12 +707,12 @@ const INIT_TASKS = [
   {
     id: 2,
     title: 'FAPI sync kontrola',
-    description: 'OvÄÅit synchronizaci faktur z FAPI.cz',
+    description: 'Ověřit synchronizaci faktur z FAPI.cz',
     agent: 'finance',
     status: 'done',
     priority: 'medium',
     deadline: '2026-03-23',
-    assigned_to: 'LukÃ¡Å¡',
+    assigned_to: 'Lukáš',
     created_by: 'system',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -721,7 +721,7 @@ const INIT_TASKS = [
   {
     id: 3,
     title: 'Gmail faktury automatizace',
-    description: 'Nastavit automatickÃ© stahovÃ¡nÃ­ faktur z Gmailu',
+    description: 'Nastavit automatické stahování faktur z Gmailu',
     agent: 'mail',
     status: 'todo',
     priority: 'high',
@@ -734,8 +734,8 @@ const INIT_TASKS = [
   },
   {
     id: 4,
-    title: 'Funnel copy generÃ¡tor',
-    description: 'VytvoÅit 4 varianty marketing copy',
+    title: 'Funnel copy generátor',
+    description: 'Vytvořit 4 varianty marketing copy',
     agent: 'marketing',
     status: 'inprogress',
     priority: 'medium',
@@ -762,8 +762,8 @@ const INIT_TASKS = [
   },
   {
     id: 6,
-    title: 'KalendÃ¡Å se AI',
-    description: 'TestovacÃ­ run AI kalendÃ¡Åe',
+    title: 'Kalendář se AI',
+    description: 'Testovací run AI kalendáře',
     agent: 'organizer',
     status: 'done',
     priority: 'low',
@@ -777,16 +777,16 @@ const INIT_TASKS = [
 ]
 
 const AGENTS = [
-  { id: 'ceo', name: 'CEO OrchestrÃ¡tor', icon: 'ð§ ', color: '#7C3AED', status: 'running', info: 'OK â 8 nÃ¡strojÅ¯' },
-  { id: 'finance', name: 'CFO Agent', icon: 'ð°', color: '#4BBEAD', status: 'running', info: 'FAPI OK â 955 faktur' },
-  { id: 'mail', name: 'Mail Agent', icon: 'ð§', color: '#3B82F6', status: 'warning', info: 'Gmail OK â fitpraha chybÃ­' },
-  { id: 'marketing', name: 'Marketing', icon: 'ð', color: '#FAB945', status: 'idle', info: 'Funnel OK â Ads chybÃ­' },
-  { id: 'content', name: 'Content', icon: 'ð¬', color: '#E43D45', status: 'error', info: 'Koncept â ready soon' },
-  { id: 'organizer', name: 'OrganizÃ¡tor', icon: 'ð', color: '#06B6D4', status: 'running', info: 'OK â 5/5 akcÃ­' },
+  { id: 'ceo', name: 'CEO Orchestrátor', icon: '🧠', color: '#7C3AED', status: 'running', info: 'OK — 8 nástrojů' },
+  { id: 'finance', name: 'CFO Agent', icon: '💰', color: '#4BBEAD', status: 'running', info: 'FAPI OK — 955 faktur' },
+  { id: 'mail', name: 'Mail Agent', icon: '📧', color: '#3B82F6', status: 'warning', info: 'Gmail OK — fitpraha chybí' },
+  { id: 'marketing', name: 'Marketing', icon: '📈', color: '#FAB945', status: 'idle', info: 'Funnel OK — Ads chybí' },
+  { id: 'content', name: 'Content', icon: '🎬', color: '#E43D45', status: 'error', info: 'Koncept — ready soon' },
+  { id: 'organizer', name: 'Organizátor', icon: '📅', color: '#06B6D4', status: 'running', info: 'OK — 5/5 akcí' },
 ]
 
 const PROFILES = {
-  'lukas@fitpraha.cz': { name: 'LukÃ¡Å¡', role: 'admin' },
+  'lukas@fitpraha.cz': { name: 'Lukáš', role: 'admin' },
   'andrea@fitpraha.cz': { name: 'Andrea', role: 'admin' },
   'pavel@fitpraha.cz': { name: 'Pavel', role: 'user' },
   'jakub@fitpraha.cz': { name: 'Jakub', role: 'user' },
@@ -801,25 +801,25 @@ function LoginScreen({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault()
     if (!email || !password) {
-      setError('VyplÅte prosÃ­m email a heslo')
+      setError('Vyplňte prosím email a heslo')
       return
     }
 
     if (email.includes('@fitpraha.cz') || email === 'demo@fitpraha.cz') {
       if (password === 'demo123') {
-        const profile = PROFILES[email] || { name: 'UÅ¾ivatel', role: 'user' }
+        const profile = PROFILES[email] || { name: 'Uživatel', role: 'user' }
         onLogin({ email, ...profile })
         return
       }
     }
 
-    setError('NesprÃ¡vnÃ½ email nebo heslo')
+    setError('Nesprávný email nebo heslo')
   }
 
   return (
     <div className="login-container">
       <div className="login-box">
-        <div className="login-title">ð§  FITPRAHA Agent Board</div>
+        <div className="login-title">🧠 FITPRAHA Agent Board</div>
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <input
@@ -841,7 +841,7 @@ function LoginScreen({ onLogin }) {
           </div>
           {error && <div style={{ color: '#E43D45', fontSize: '12px', marginBottom: '12px' }}>{error}</div>}
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-            PÅihlÃ¡sit se
+            Přihlásit se
           </button>
         </form>
         <div style={{ marginTop: '20px', fontSize: '12px', color: '#9CA3AF' }}>
@@ -872,28 +872,28 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
 
   const handleSave = () => {
     if (!formData.title?.trim()) {
-      alert('Zadejte prosÃ­m nÃ¡zev Ãºkolu')
+      alert('Zadejte prosím název úkolu')
       return
     }
     onSave(formData)
   }
 
-  const statusLabels = { todo: 'NovÃ½', inprogress: 'ProbÃ­hÃ¡', done: 'Hotovo', waiting: 'ÄekÃ¡' }
-  const priorityLabels = { high: 'VysokÃ¡', medium: 'StÅednÃ­', low: 'NÃ­zkÃ¡' }
+  const statusLabels = { todo: 'Nový', inprogress: 'Probíhá', done: 'Hotovo', waiting: 'Čeká' }
+  const priorityLabels = { high: 'Vysoká', medium: 'Střední', low: 'Nízká' }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-title">{task?.id ? 'Upravit Ãºkol' : 'PÅidat novÃ½ Ãºkol'}</div>
+        <div className="modal-title">{task?.id ? 'Upravit úkol' : 'Přidat nový úkol'}</div>
 
         <div className="form-group">
-          <label className="form-label">NÃ¡zev Ãºkolu</label>
+          <label className="form-label">Název úkolu</label>
           <input
             type="text"
             className="form-input"
             value={formData.title || ''}
             onChange={(e) => handleChange('title', e.target.value)}
-            placeholder="Zadejte nÃ¡zev"
+            placeholder="Zadejte název"
           />
         </div>
 
@@ -903,7 +903,7 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
             className="form-textarea"
             value={formData.description || ''}
             onChange={(e) => handleChange('description', e.target.value)}
-            placeholder="DetailnÃ­ popis Ãºkolu"
+            placeholder="Detailní popis úkolu"
           />
         </div>
 
@@ -914,9 +914,9 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
             value={formData.priority || 'medium'}
             onChange={(e) => handleChange('priority', e.target.value)}
           >
-            <option value="high">VysokÃ¡ - ð´</option>
-            <option value="medium">StÅednÃ­ - ð </option>
-            <option value="low">NÃ­zkÃ¡ - ð¢</option>
+            <option value="high">Vysoká - 🔴</option>
+            <option value="medium">Střední - 🟠</option>
+            <option value="low">Nízká - 🟢</option>
           </select>
         </div>
 
@@ -927,26 +927,26 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
             value={formData.status || 'todo'}
             onChange={(e) => handleChange('status', e.target.value)}
           >
-            <option value="todo">NovÃ½</option>
-            <option value="inprogress">ProbÃ­hÃ¡</option>
-            <option value="waiting">ÄekÃ¡</option>
+            <option value="todo">Nový</option>
+            <option value="inprogress">Probíhá</option>
+            <option value="waiting">Čeká</option>
             <option value="done">Hotovo</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label className="form-label">PÅiÅazeno</label>
+          <label className="form-label">Přiřazeno</label>
           <input
             type="text"
             className="form-input"
             value={formData.assigned_to || ''}
             onChange={(e) => handleChange('assigned_to', e.target.value)}
-            placeholder="JmÃ©no osoby"
+            placeholder="Jméno osoby"
           />
         </div>
 
         <div className="form-group">
-          <label className="form-label">TermÃ­n</label>
+          <label className="form-label">Termín</label>
           <input
             type="date"
             className="form-input"
@@ -956,7 +956,7 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
         </div>
 
         <div className="comments-section">
-          <div className="comments-title">PoznÃ¡mky ({(formData.comments || []).length})</div>
+          <div className="comments-title">Poznámky ({(formData.comments || []).length})</div>
           {(formData.comments || []).map((comment, idx) => (
             <div key={idx} className="comment">
               <div className="comment-author">{comment.author}</div>
@@ -970,21 +970,21 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
               className="comment-input"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              placeholder="PÅidat poznÃ¡mku..."
+              placeholder="Přidat poznámku..."
               onKeyPress={(e) => e.key === 'Enter' && handleAddComment()}
             />
             <button className="comment-btn" onClick={handleAddComment}>
-              â
+              ✓
             </button>
           </div>
         </div>
 
         <div className="modal-buttons">
           <button className="btn btn-primary" onClick={handleSave}>
-            UloÅ¾it
+            Uložit
           </button>
           <button className="btn btn-secondary" onClick={onClose}>
-            ZruÅ¡it
+            Zrušit
           </button>
           {task?.id && (
             <button className="btn btn-danger" onClick={() => onDelete(task.id)}>
@@ -999,9 +999,9 @@ function TaskDetailModal({ task, agent, onClose, onSave, onDelete, user }) {
 
 function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, user }) {
   const statusIcon = {
-    running: 'â',
-    warning: 'â ',
-    error: 'â',
+    running: '✓',
+    warning: '⚠',
+    error: '✗',
     idle: '-',
   }
 
@@ -1023,13 +1023,13 @@ function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, user }) {
     const due = new Date(deadline)
     const daysLeft = Math.ceil((due - now) / (1000 * 60 * 60 * 24))
 
-    if (daysLeft < 0) return `${Math.abs(daysLeft)} dnÃ­ zpoÅ¾dÄno`
+    if (daysLeft < 0) return `${Math.abs(daysLeft)} dní zpožděno`
     if (daysLeft === 0) return 'Dnes'
-    if (daysLeft === 1) return 'ZÃ­tra'
-    return `Za ${daysLeft} dnÃ­`
+    if (daysLeft === 1) return 'Zítra'
+    return `Za ${daysLeft} dní`
   }
 
-  const statusLabels = { todo: 'NovÃ½', inprogress: 'ProbÃ­hÃ¡', done: 'Hotovo', waiting: 'ÄekÃ¡' }
+  const statusLabels = { todo: 'Nový', inprogress: 'Probíhá', done: 'Hotovo', waiting: 'Čeká' }
 
   return (
     <div className="column">
@@ -1057,7 +1057,7 @@ function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, user }) {
             </div>
             <div className="task-tags">
               <span className={`task-tag ${task.status}`}>{statusLabels[task.status]}</span>
-              {task.assigned_to && <span style={{ fontSize: '10px', color: '#9CA3AF' }}>ð¤ {task.assigned_to}</span>}
+              {task.assigned_to && <span style={{ fontSize: '10px', color: '#9CA3AF' }}>👤 {task.assigned_to}</span>}
             </div>
           </div>
         ))}
@@ -1065,7 +1065,7 @@ function KanbanColumn({ agent, tasks, onTaskClick, onAddTask, user }) {
 
       <div className="column-footer">
         <button className="add-task-btn" onClick={() => onAddTask(agent.id)}>
-          + PÅidat Ãºkol
+          + Přidat úkol
         </button>
       </div>
     </div>
@@ -1119,13 +1119,13 @@ export default function App() {
         (payload) => {
           if (payload.eventType === 'INSERT') {
             setTasks((prev) => [...prev, payload.new])
-            addActivity(`NovÃ½ Ãºkol: ${payload.new.title}`)
+            addActivity(`Nový úkol: ${payload.new.title}`)
           } else if (payload.eventType === 'UPDATE') {
             setTasks((prev) => prev.map((t) => (t.id === payload.new.id ? payload.new : t)))
-            addActivity(`AktualizovÃ¡n: ${payload.new.title}`)
+            addActivity(`Aktualizován: ${payload.new.title}`)
           } else if (payload.eventType === 'DELETE') {
             setTasks((prev) => prev.filter((t) => t.id !== payload.old.id))
-            addActivity(`SmazÃ¡n: ${payload.old.title}`)
+            addActivity(`Smazán: ${payload.old.title}`)
           }
         }
       )
@@ -1153,7 +1153,7 @@ export default function App() {
           .eq('id', formData.id)
 
         if (error) throw error
-        addActivity(`AktualizovÃ¡n: ${formData.title}`)
+        addActivity(`Aktualizován: ${formData.title}`)
       } else {
         const { error } = await supabase.from('tasks').insert([
           {
@@ -1165,29 +1165,29 @@ export default function App() {
         ])
 
         if (error) throw error
-        addActivity(`NovÃ½ Ãºkol: ${formData.title}`)
+        addActivity(`Nový úkol: ${formData.title}`)
       }
 
       setSelectedTask(null)
       setNewTaskAgent(null)
     } catch (err) {
       console.error('Error saving task:', err)
-      alert('Chyba pÅi uklÃ¡dÃ¡nÃ­ Ãºkolu')
+      alert('Chyba při ukládání úkolu')
     }
   }
 
   const handleDeleteTask = async (taskId) => {
-    if (!confirm('Opravdu chcete smazat tento Ãºkol?')) return
+    if (!confirm('Opravdu chcete smazat tento úkol?')) return
 
     try {
       const { error } = await supabase.from('tasks').delete().eq('id', taskId)
 
       if (error) throw error
       setSelectedTask(null)
-      addActivity('Ãkol smazÃ¡n')
+      addActivity('Úkol smazán')
     } catch (err) {
       console.error('Error deleting task:', err)
-      alert('Chyba pÅi mazÃ¡nÃ­ Ãºkolu')
+      alert('Chyba při mazání úkolu')
     }
   }
 
@@ -1225,28 +1225,28 @@ export default function App() {
       <div className="app-container">
         <div className="main-content">
           <div className="header">
-            <div className="header-title">ð§  FITPRAHA.CZ Agent Board</div>
+            <div className="header-title">🧠 FITPRAHA.CZ Agent Board</div>
             <div className="header-controls">
-              <span style={{ fontSize: '14px' }}>ð¤ {user.name}</span>
+              <span style={{ fontSize: '14px' }}>👤 {user.name}</span>
               <button
                 className="sidebar-toggle"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 title="Aktivita"
               >
-                ð
+                📋
               </button>
-              <button className="sidebar-toggle" onClick={() => setUser(null)} title="OdhlÃ¡sit se">
-                ðª
+              <button className="sidebar-toggle" onClick={() => setUser(null)} title="Odhlásit se">
+                🚪
               </button>
             </div>
           </div>
 
           <div className="filter-bar">
             {[
-              { value: 'all', label: 'ðï¸ VÅ¡e' },
-              { value: 'critical', label: 'ð´ KritickÃ©' },
-              { value: 'inprogress', label: 'âï¸ ProbÃ­hÃ¡' },
-              { value: 'waiting', label: 'â¸ï¸ ÄekÃ¡' },
+              { value: 'all', label: '👁️ Vše' },
+              { value: 'critical', label: '🔴 Kritické' },
+              { value: 'inprogress', label: '⚙️ Probíhá' },
+              { value: 'waiting', label: '⏸️ Čeká' },
             ].map((f) => (
               <button
                 key={f.value}
@@ -1260,15 +1260,15 @@ export default function App() {
 
           <div className="stats-panel">
             <div className="stat-item completed">
-              <span className="stat-label">â SplnÄno:</span>
+              <span className="stat-label">✅ Splněno:</span>
               <span className="stat-value">{stats.completed}</span>
             </div>
             <div className="stat-item inprogress">
-              <span className="stat-label">âï¸ ProbÃ­hÃ¡:</span>
+              <span className="stat-label">⚙️ Probíhá:</span>
               <span className="stat-value">{stats.inprogress}</span>
             </div>
             <div className="stat-item overdue">
-              <span className="stat-label">ð´ Po termÃ­nu:</span>
+              <span className="stat-label">🔴 Po termínu:</span>
               <span className="stat-value">{stats.overdue}</span>
             </div>
           </div>
@@ -1293,10 +1293,10 @@ export default function App() {
         </div>
 
         <div className={`sidebar ${!sidebarOpen ? 'hidden' : ''}`}>
-          <div className="sidebar-header">ð Aktivita (poslednÃ­ch {activity.length})</div>
+          <div className="sidebar-header">📋 Aktivita (posledních {activity.length})</div>
           <div className="sidebar-content">
             {activity.length === 0 ? (
-              <div style={{ color: '#6B7280', fontSize: '12px', padding: '12px' }}>ZatÃ­m Å¾Ã¡dnÃ¡ aktivita</div>
+              <div style={{ color: '#6B7280', fontSize: '12px', padding: '12px' }}>Zatím žádná aktivita</div>
             ) : (
               activity.map((item) => (
                 <div key={item.id} className="activity-item">
